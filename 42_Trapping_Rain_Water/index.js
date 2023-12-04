@@ -72,10 +72,7 @@ var trap = function (height) {
                             }
                         }
                     }
-
                     //determine if its a staircase (r edge pos is not the highest of the remaining)
-
-
 
                     //has enough height difference to hold water
                     if (height[r_edge_pos] - height[r_edge_pos - 1] >= 1 && (isFinalAscent || isStairCaseUp)) {
