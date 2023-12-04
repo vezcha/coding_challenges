@@ -20,8 +20,16 @@ var isPerfectSquare = function (num) {
             }
         }
 
-    } else if (num >= 100000000 && num < 2000000000) {
-        for (let i = 44721; i > 31621; i--) {
+    } else if (num >= 100000000 && num < 1500000000) {
+        for (let i = 38730; i > 31622; i--) {
+            let quotient = num / i;
+            if (quotient === i) {
+                return true;
+            }
+        }
+
+    } else if (num >= 1500000000 && num < 2000000000) {
+        for (let i = 38729; i > 44722; i--) {
             let quotient = num / i;
             if (quotient === i) {
                 return true;
