@@ -55,12 +55,34 @@ var trap = function (height) {
                 //distance between edges contains a gap and non-zero height edges
                 if (height[l_edge_pos] > 0 && height[r_edge_pos] > 0 && r_edge_pos - l_edge_pos > 1 && height[l_edge_pos] <= height[r_edge_pos]) { //ascending gap found
 
+                    //determine if final ascent
+                    let isFinalAscent = false;
+                    let isStairCaseUp = false;
+                    if (r_edge_pos == height.length - 1) {
+                        isFinalAscent = true;
+                    } else {
+                        const remaining_r_edges = height.slice(r_edge_pos + 1);
+                        if (height[r_edge_pos] >= Math.max(...remaining_r_edges)) {
+                            isFinalAscent = true;
+                        } else {
+                            isFinalAscent = false;
+                            let prevEdgesinRange = height.slice(l_edge_pos, (r_edge_pos - l_edge_pos));
+                            if (Math.max(...remaining_r_edges) - height[r_edge_pos] >= 1 && Math.max(...prevEdgesinRange) < Math.max(...remaining_r_edges)) { // and the edges from l_edge to r edge - 1 are not greater than the max reaming r edges
+                                isStairCaseUp = true;
+                            }
+                        }
+                    }
+
+                    //determine if its a staircase (r edge pos is not the highest of the remaining)
+
+
+
                     //has enough height difference to hold water
-                    if (height[r_edge_pos] - height[r_edge_pos - 1] >= 1) {
+                    if (height[r_edge_pos] - height[r_edge_pos - 1] >= 1 && (isFinalAscent || isStairCaseUp)) {
 
                         //advance l edge if next edge is greater than previous edge && less than right edge
                         let temp_l_edge_pos = l_edge_pos;
-                        while ((height[temp_l_edge_pos + 1] - height[temp_l_edge_pos] === 1) && (height[r_edge_pos] - height[temp_l_edge_pos + 1] === 1)) {
+                        while ((height[temp_l_edge_pos + 1] - height[temp_l_edge_pos] > 0)) {
                             temp_l_edge_pos++;
                         }
                         l_edge_pos = temp_l_edge_pos;
@@ -72,7 +94,7 @@ var trap = function (height) {
                             //count water layer units until blocked start at next right
                             for (let l = l_edge_pos + 1; l < r_edge_pos; l++) {
                                 let column = l;
-                                if (height[column] < depth_layer) { //next edge height is low enough to allow a unit of water
+                                if (height[column] < depth_layer && depth_layer <= height[r_edge_pos]) { //next edge height is low enough to allow a unit of water and 
                                     totalWater++;
                                 } else if (height[column] == depth_layer) { //next edge is the same level
                                     continue; // to next water unit
@@ -158,7 +180,7 @@ var trap = function (height) {
 //create textual graph represetnation of depth heights
 var visualize = function (height) {
 
-    let result = height.map((x) => x); //create copy
+    let result = height.map((x) => x); //create shallow copy
 
     //sanity check
     if (typeof result != 'object') {
@@ -216,12 +238,13 @@ let case8 = [6, 4, 2, 0, 3, 2, 0, 3, 1, 4, 5, 3, 2, 7, 5, 3, 0, 1, 2, 1, 3, 4, 6
 let case9 = [0, 7, 1, 4, 6];
 let case10 = [0, 1, 2, 0, 3, 0, 1, 2, 0, 0, 4, 2, 1, 2, 5, 0, 1, 2, 0, 2]; //26
 let case11 = [4, 9, 4, 5, 3, 2] // 1
+let case12 = [2, 9, 6, 3, 6, 7, 6] //6
 
-visualize(case11);
-console.log(trap(case11));
+// visualize(case11);
+console.log(trap(case12));
 
-//problem case 11;
-//case advancement 186/322
+//problem case 12;
+//case advancement 255/322
 //todo debug ascend path to handle middle spikes
 
 //stump cases
@@ -236,3 +259,4 @@ console.log("Testing case 8 result: " + trap(case8) + " to be 83");
 console.log("Testing case 9 result: " + trap(case9) + " to be 7");
 console.log("Testing case 10 result: " + trap(case10) + " to be 26");
 console.log("Testing case 11 result: " + trap(case11) + " to be 1");
+console.log("Testing case 12 result: " + trap(case12) + " to be 6");
