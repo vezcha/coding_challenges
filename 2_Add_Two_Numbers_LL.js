@@ -8,6 +8,7 @@
 * Date published: 12.5.23 P(Earth) G(Milky Way) timeline alias - devil shift
 * 
 * Status [Debug] 12.5.23
+* Test Case Pass Rate [1565/1568] 12.5.23
 * Subject to copyright protection lasting through 2023 and beyond and before through prophetization effect
 */
 
@@ -44,7 +45,7 @@ var addTwoNumbers = function (l1, l2) {
     }
 
     //build reverse notation LL
-    console.log('sum is: ' + sum + " and typeof " + typeof sum);
+    // console.log('sum is: ' + sum + " and typeof " + typeof sum);
     let sum_list = buildRevSumList(sum);
     //return LL
     return sum_list;
@@ -69,13 +70,13 @@ var getListSize = function (list) {
 var getFullNumber = function (list, list_length) {
 
     let number;
-
+    let isBigInt;
     if (list_length >= 15) {
         number = BigInt(0);
         isBigInt = true;
     } else {
         number = 0;
-        let isBigInt = false;
+        isBigInt = false;
     }
     let list_head = list;
 
@@ -138,6 +139,8 @@ var buildRevSumList = function (sum) {
         }
         if (sum < Number.MAX_SAFE_INTEGER) {
             sum = Number(sum);
+            ten = Number(10);
+            zero = Number(0);
             isBigInt = false;
         } else {
             sum = BigInt(sum);
@@ -172,7 +175,7 @@ var genLLfromArray = function (values) {
 
     //iterate through values
     for (let i = 0; i < values.length; i++) {
-        list.val = values[i];
+        list.val = Number(values[i]);
         if (i != values.length - 1) {
             list.next = new ListNode();
             list = list.next;
