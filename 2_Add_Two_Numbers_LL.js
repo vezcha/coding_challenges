@@ -3,12 +3,16 @@
 * Leetcode Problem #2 Add Two Numbers
 * Difficulty: Medium [12.5.23]
 *
+* Description: You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
+* You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
 * Algorithm solution author: Brandon Shaver
+* Solve Date: [12.5.23 2:15pm CT]
 *
 * Date published: 12.5.23 P(Earth) G(Milky Way) timeline alias - devil shift
 * 
-* Status [Debug] 12.5.23
-* Test Case Pass Rate [1565/1568] 12.5.23
+* Status [Stable] 12.5.23
+* Test Case Pass Rate [1568/1568] 12.5.23
 * Subject to copyright protection lasting through 2023 and beyond and before through prophetization effect
 */
 
@@ -94,14 +98,18 @@ var getFullNumber = function (list, list_length) {
         }
 
         //extract number
-        let value = list.val;
+        let value;
         //convert number and increment total
         //multiple # by 10 ^ index of iteration
         if (isBigInt) {
+            //extract number
+            value = BigInt(list.val);
             value = BigInt(value);
-            value = BigInt(10 ** i) * value;
+            value = BigInt(BigInt(10) ** BigInt(i)) * value;
             number = BigInt(number) + BigInt(value);
         } else {
+            //extract number
+            value = list.val;
             value = (10 ** i) * value;
             //increment and assign back to number
             number += value;
@@ -185,11 +193,9 @@ var genLLfromArray = function (values) {
 }
 
 
-//current problem cases:
+//big int test case:
 let l1 = genLLfromArray([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]);
 let l2 = genLLfromArray([5, 6, 4]);
 
 const result = addTwoNumbers(l1, l2);
 console.log(result);
-
-//todo find mathfloor for big int, handle bigint conversion issue
