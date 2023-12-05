@@ -1,12 +1,14 @@
 
 /*
-* Leetcode problem #2 Add Two Numbers
-* Difficulty Medium [12.5.23]
+* Leetcode Problem #2 Add Two Numbers
+* Difficulty: Medium [12.5.23]
 *
 * Algorithm solution author: Brandon Shaver
-* Date published: 12.5.23 (Earth) timeline alias - devil shift
 *
+* Date published: 12.5.23 P(Earth) G(Milky Way) timeline alias - devil shift
+* 
 * Status [Debug] 12.5.23
+* Subject to copyright protection lasting through 2023 and beyond and before through prophetization effect
 */
 
 /**
@@ -126,11 +128,23 @@ var buildRevSumList = function (sum) {
     while (sum / ten > zero && sum != zero) {
         digits.push(sum % ten);
         if (isBigInt) {
-            sum = BigInt(Math.floor(sum / ten));
+            sum = BigInt((sum / ten));
+            ten = BigInt(10);
+            zero = BigInt(0);
         } else {
             sum = Math.floor(sum / ten); //eliminate lowest place digit
+            ten = Number(10);
+            zero = Number(0);
         }
-
+        if (sum < Number.MAX_SAFE_INTEGER) {
+            sum = Number(sum);
+            isBigInt = false;
+        } else {
+            sum = BigInt(sum);
+            isBigInt = true;
+            ten = BigInt(10);
+            zero = BigInt(0);
+        }
     }
 
     //build sumList
@@ -175,4 +189,4 @@ let l2 = genLLfromArray([5, 6, 4]);
 const result = addTwoNumbers(l1, l2);
 console.log(result);
 
-//todo find mathfloor for big int
+//todo find mathfloor for big int, handle bigint conversion issue
