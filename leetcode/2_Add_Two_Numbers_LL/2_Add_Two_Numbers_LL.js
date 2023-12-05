@@ -173,6 +173,7 @@ var buildRevSumList = function (sum) {
     return sumListHead;
 }
 
+
 function ListNode(val, next) {
     this.val = (val === undefined ? 0 : val)
     this.next = (next === undefined ? null : next)
@@ -192,6 +193,9 @@ var genLLfromArray = function (values) {
     }
     return head;
 }
+
+
+//minified version from
 
 
 //big int test case:
