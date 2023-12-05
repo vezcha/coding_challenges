@@ -8,6 +8,7 @@
 
 * Algorithm solution author: Brandon Shaver
 * Solve Date: [12.5.23 2:15pm CT]
+* Version: [1.0.0]
 *
 * Date published: 12.5.23 P(Earth) G(Milky Way) timeline alias - devil shift
 * 
