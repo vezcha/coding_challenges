@@ -5,14 +5,13 @@ Status: [Solved] 12.6.23
 Solution Author: [Brandon Shaver - vezcha]
 
 Description:
-Given a string s, return the longest 
-palindromic substring in s.
+Given a string s, return the longest palindromic substring in s.
 
 [Additional Features]
 Capable of capturing and storing all palindromes for a given string
 
 [Todos]
--Increase time efficiency
+    -Increase time efficiency
 */
 
 
