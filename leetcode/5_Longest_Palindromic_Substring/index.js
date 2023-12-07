@@ -2,6 +2,7 @@
 Leetcode Problem #5 Longest Palindromic Substring
 Difficulty: [Medium] 12.6.23
 Status: [Solved] 12.6.23
+Solution Author: [Brandon Shaver - vezcha]
 
 Description:
 Given a string s, return the longest 
