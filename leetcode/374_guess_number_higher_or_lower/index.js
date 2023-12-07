@@ -40,9 +40,6 @@ var guessNumber = function (n) {
 
     return mid;
 
-
-
-
 };
 
 guessNumber()
