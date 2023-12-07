@@ -9,6 +9,9 @@ palindromic substring in s.
 
 [Additional Features]
 Capable of capturing and storing all palindromes for a given string
+
+[Todos]
+-Increase time efficiency
 */
 
 
