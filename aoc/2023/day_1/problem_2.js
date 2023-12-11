@@ -91,6 +91,7 @@ let calc_calibration_sum = function (s) {
             let word_index = line.indexOf(entry.value[0]);
             let last_word_index = line.lastIndexOf(entry.value[0]);
 
+            //variable names are confusing here (tdb rename index variables)
             if (word_index > -1) {
                 if (word_index < first_word_digit_index) {
                     f_digit = entry.value[1].toString();
