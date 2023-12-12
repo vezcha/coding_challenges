@@ -1,6 +1,8 @@
 // Leetcode
 // Status [Solved]
 
+//todo seek to understand why this is slow and how to remove nested loop
+
 // 26. Remove Duplicates from Sorted Array
 // Easy
 // Topics
@@ -76,6 +78,7 @@ let case2 = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4];
 let case3 = [1];
 
 export { removeDuplicates };
+
 console.log(removeDuplicates(case1));
 console.log(removeDuplicates(case2));
 console.log(removeDuplicates(case3));
