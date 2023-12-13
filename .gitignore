@@ -1,6 +1,9 @@
 # IDE
 .vscode/
 
+#Test Inputs
+aoc\2023\day_3\input\*
+
 # Algo packager
 /algo_packager/*
 
