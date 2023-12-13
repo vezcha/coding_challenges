@@ -120,7 +120,7 @@ const getPowerSet = function (reds, greens, blues) {
 }
 //read input from file
 const readInput = function (file) {
-    return fs.readFileSync(file, 'utf8', (err, data) => {
+    return fs.readFileSync(file, (err, data) => {
         if (err) throw err;
         console.log('data: ' + data);
     });

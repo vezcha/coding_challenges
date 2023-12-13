@@ -1,6 +1,11 @@
-/algo_packager/*
+# IDE
+.vscode/
 
+# Algo packager
+/algo_packager/*
 
 # working in progress
 /leetcode/1903_Largest_Odd_Number_In_String/*
+
+# utilites/templates
 /utility/*
