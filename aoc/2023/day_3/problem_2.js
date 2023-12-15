@@ -6,90 +6,69 @@ const sumPartNumbers = function (fileInput) {
     schematic = schematic.replaceAll('\r', '');
 
     let lines = schematic.split('\n');
-    let sum = 0;
+    let pn_sum = 0;
     let gr_sum = 0;
 
     if (lines.length < 1) {
-        return sum;
+        return pn_sum;
     }
 
-    //iterate through each line
+    //iterate through each line of input file , reading 3 lines as a block
     for (let i = 0; i < lines.length - 2; i++) {
         if (lines.length === 1) { } //ignore for now
         if (lines.length === 2) { } //ignore for now
 
-        let valids = [];
         let pncsMap = new Map();
-        let confirmed = [];
-
         //assume lines >= 3, read 3 lines at a time, top, mid, bot
         top = i;
         mid = i + 1;
         bot = i + 2;
 
         if (top === 0) { //read top line only if it is the first line
-            let gcs = findGearCandidates(lines[top]);
-            gr_sum += findGearRatio(gcs, [null, lines[top], lines[mid]]);
+            let block = [null, lines[top], lines[mid]];
+            let line = lines[top];
 
-            pncsMap = findPNCs(lines[top]);
-            confirmed = adjCheck(pncsMap, [null, lines[top], lines[mid]]);
-            if (confirmed.length > 0) {
-                valids = confirmed;
-                if (valids.length > 0) {
-                    //parse and increment assign to sum
-                    let prevSum = sum;
-                    for (let j = 0; j < valids.length; j++) {
-                        sum += parseInt(valids[j]);
-                    }
-                    console.log('Valid PNs for line #:', top, valids.toString(), prevSum, sum, gr_sum);
-                }
-                valids = [];
-            }
+            let prevSum = pn_sum;
+            let gcs = findGearCandidates(line);
+            gr_sum += findGearRatio(gcs, block);
+
+            pncsMap = findPNCs(line);
+            valid_pns = findValidPNs(pncsMap, block);
+            pn_sum += findPNSum(pncsMap, block);
+            console.log('Valid PNs for line #:', top, valid_pns.toString(), prevSum, pn_sum, gr_sum);
 
         }
         //read mid always
-        let gcs = findGearCandidates(lines[mid]);
-        gr_sum += findGearRatio(gcs, [lines[top], lines[mid], lines[bot]]);
+        let block = [lines[top], lines[mid], lines[bot]];
+        let line = lines[mid];
 
-        pncsMap = findPNCs(lines[mid]);
-        confirmed = adjCheck(pncsMap, [lines[top], lines[mid], lines[bot]]);
-        if (confirmed.length > 0) {
-            valids = confirmed;
-            if (valids.length > 0) {
-                //parse and increment assign to sum
-                let prevSum = sum;
-                for (let j = 0; j < valids.length; j++) {
-                    sum += parseInt(valids[j]);
-                }
-                console.log('Valid PNs for line #:', mid, valids.toString(), prevSum, sum, gr_sum);
-            }
-            valids = [];
-        }
+        let prevSum = pn_sum;
+        let gcs = findGearCandidates(line);
+        gr_sum += findGearRatio(gcs, block);
+
+        pncsMap = findPNCs(line);
+        valid_pns = findValidPNs(pncsMap, block);
+        pn_sum += findPNSum(pncsMap, block);
+        console.log('Valid PNs for line #:', mid, valid_pns.toString(), prevSum, pn_sum, gr_sum);
+
 
         //read bot only if it is last line
         if (lines[bot] != undefined && bot === (lines.length - 1)) {
-            let gcs = findGearCandidates(lines[bot]);
-            gr_sum += findGearRatio(gcs, [lines[top], lines[mid], lines[bot]]);
+            let block = [lines[mid], lines[bot], null];
+            let line = lines[bot];
 
-            pncsMap = findPNCs(lines[bot]);
-            confirmed = adjCheck(pncsMap, [lines[mid], lines[bot], null]);
-            if (confirmed.length > 0) {
-                valids = confirmed;
-                if (valids.length > 0) {
-                    //parse and increment assign to sum
-                    let prevSum = sum;
-                    for (let j = 0; j < valids.length; j++) {
-                        sum += parseInt(valids[j]);
-                    }
-                    console.log('Valid PNs for line #:', bot, valids.toString(), prevSum, sum, gr_sum);
+            let gcs = findGearCandidates(line);
+            gr_sum += findGearRatio(gcs, block);
 
-                }
-                valids = [];
-            }
+            pncsMap = findPNCs(line);
+            valid_pns = findValidPNs(pncsMap, block);
+            pn_sum += findPNSum(pncsMap, block);
+            console.log('Valid PNs for line #:', bot, valid_pns.toString(), prevSum, pn_sum, gr_sum);
         }
     }
     console.log('Gear Ratio Sum: ', gr_sum);
-    return sum;
+    console.log('Part Number Sum: ', pn_sum);
+    return pn_sum;
 }
 
 const findPNCs = function (line) {
@@ -119,6 +98,23 @@ const findGearCandidates = function (line) {
         }
     }
     return gci;
+}
+
+const findPNSum = function (pncsMap, block) {
+    let sum = 0;
+    let valids = adjCheck(pncsMap, block);
+    if (valids.length > 0) {
+        //parse and increment assign to sum
+        for (let j = 0; j < valids.length; j++) {
+            sum += parseInt(valids[j]);
+        }
+    }
+    return sum;
+}
+
+const findValidPNs = function (pncsMap, block) {
+    let valids = adjCheck(pncsMap, block);
+    return valids;
 }
 
 const findGearRatio = function (gcs, block) {
