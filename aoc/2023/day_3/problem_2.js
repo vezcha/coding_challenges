@@ -24,46 +24,36 @@ const sumPartNumbers = function (fileInput) {
         mid = i + 1;
         bot = i + 2;
 
-        if (top === 0) { //read top line only if it is the first line
-            let block = [null, lines[top], lines[mid]];
-            let line = lines[top];
+        for (let j = 0; j < 3; j++) {
+            let block = [], line;
+            if (j == 0) { //top condition
+                if (top === 0) { //read top line only if it is the first line
+                    block = [null, lines[top], lines[mid]];
+                    line = lines[top];
+                    lineNum = top;
+                }
+            } else if (j === 1) { //mid condition
+                block = [lines[top], lines[mid], lines[bot]];
+                line = lines[mid];
+                lineNum = mid;
+            } else { // bottom condition
+                if (lines[bot] != undefined && bot === (lines.length - 1)) {
+                    block = [lines[mid], lines[bot], null];
+                    line = lines[bot];
+                    lineNum = bot;
+                }
+            }
+            //block condition was set
+            if (block.length > 0) {
+                let prevSum = pn_sum;
+                let gcs = findGearCandidates(line);
+                gr_sum += findGearRatio(gcs, block);
 
-            let prevSum = pn_sum;
-            let gcs = findGearCandidates(line);
-            gr_sum += findGearRatio(gcs, block);
-
-            pncsMap = findPNCs(line);
-            valid_pns = findValidPNs(pncsMap, block);
-            pn_sum += findPNSum(pncsMap, block);
-            console.log('Valid PNs for line #:', top, valid_pns.toString(), prevSum, pn_sum, gr_sum);
-
-        }
-        //read mid always
-        let block = [lines[top], lines[mid], lines[bot]];
-        let line = lines[mid];
-
-        let prevSum = pn_sum;
-        let gcs = findGearCandidates(line);
-        gr_sum += findGearRatio(gcs, block);
-
-        pncsMap = findPNCs(line);
-        valid_pns = findValidPNs(pncsMap, block);
-        pn_sum += findPNSum(pncsMap, block);
-        console.log('Valid PNs for line #:', mid, valid_pns.toString(), prevSum, pn_sum, gr_sum);
-
-
-        //read bot only if it is last line
-        if (lines[bot] != undefined && bot === (lines.length - 1)) {
-            let block = [lines[mid], lines[bot], null];
-            let line = lines[bot];
-
-            let gcs = findGearCandidates(line);
-            gr_sum += findGearRatio(gcs, block);
-
-            pncsMap = findPNCs(line);
-            valid_pns = findValidPNs(pncsMap, block);
-            pn_sum += findPNSum(pncsMap, block);
-            console.log('Valid PNs for line #:', bot, valid_pns.toString(), prevSum, pn_sum, gr_sum);
+                pncsMap = findPNCs(line);
+                valid_pns = findValidPNs(pncsMap, block);
+                pn_sum += findPNSum(pncsMap, block);
+                console.log('Valid PNs for line #:', lineNum, valid_pns.toString(), prevSum, pn_sum, gr_sum);
+            }
         }
     }
     console.log('Gear Ratio Sum: ', gr_sum);
@@ -179,7 +169,6 @@ const findAdjPartNumbers = function (gci, block) {
 }
 
 const adjCheck = function (pncMap, block) {
-    let prev = block[0], cur = block[1], next = block[2];
     let validPNs = []; symbRegex = /[!@#$%^&*\-+=\/]/;
     let pnc_iterator = pncMap.entries();
     let entry = pnc_iterator.next();
@@ -189,35 +178,21 @@ const adjCheck = function (pncMap, block) {
         let end = start + pnc.length + 1;
         //keep range in bounds
         start = start < 0 ? 0 : start;
-        if (prev) {
-            end = end > prev.length - 1 ? prev.length - 1 : end;
-            if (symbRegex.test(prev.substring(start, end + 1))) { //these blocks can be reduced into a loop
-                validPNs.push(pnc);
-                entry = pnc_iterator.next();
-                continue;
-            }
-        }
-        if (cur) {
-            end = end > cur.length - 1 ? cur.length - 1 : end;
-            if (symbRegex.test(cur.substring(start, end + 1))) {
-                validPNs.push(pnc);
-                entry = pnc_iterator.next();
-                continue;
-            }
-        }
-        if (next) {
-            end = end > next.length - 1 ? next.length - 1 : end;
-            if (symbRegex.test(next.substring(start, end + 1))) {
-                validPNs.push(pnc);
-                entry = pnc_iterator.next();
-                continue;
+
+        //iterate through each block checking for valid PNs [top,mid,bot]
+        for (let i = 0; i < block.length; i++) {
+            if (block[i]) {
+                end = end > block[i].length - 1 ? block[i].length - 1 : end;
+                if (symbRegex.test(block[i].substring(start, end + 1))) { //these blocks can be reduced into a loop
+                    validPNs.push(pnc);
+                    break;
+                }
             }
         }
         entry = pnc_iterator.next();
     }
     return validPNs;
 }
-
 
 //read input from file
 const readInput = function (file) {
@@ -226,14 +201,11 @@ const readInput = function (file) {
     });
 }
 
-
 // let answer = sumPartNumbers('./input/sample.txt');
 
 let rp = './input/input.txt';
 let answer = sumPartNumbers(rp);
 console.log('solution: ', answer);
 
-//correct sum is 537732
-
-//gear ratio sum
-// 84883664
+//correct Part Number sum is 537732
+//correct Gear Ratio sum is 84883664
