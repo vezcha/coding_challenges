@@ -183,7 +183,7 @@ const adjCheck = function (pncMap, block) {
         for (let i = 0; i < block.length; i++) {
             if (block[i]) {
                 end = end > block[i].length - 1 ? block[i].length - 1 : end;
-                if (symbRegex.test(block[i].substring(start, end + 1))) { //these blocks can be reduced into a loop
+                if (symbRegex.test(block[i].substring(start, end + 1))) {
                     validPNs.push(pnc);
                     break;
                 }
